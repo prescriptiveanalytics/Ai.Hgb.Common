@@ -1,0 +1,49 @@
+name: CI/CD
+
+on:
+  pull_request: # CI (pr validation)
+    branches: [ "main" ]
+  push:         # CI (ci package)
+    branches: [ "main", "release/v**" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet: [ '8.0.x' ]
+    name: Build, Test and (Publish if not pull request) ${{ matrix.dotnet }}
+    
+    steps:
+    - name: checkout repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # avoid shallow clone so nbgv can work.
+        
+    - uses: dotnet/nbgv@master
+      with:
+        setAllVars: true
+      id: nbgv
+      name: install semantic versioning tool (nerdbank.gitversioning)
+    - run: echo 'SemVer2=${{ steps.nbgv.outputs.SemVer2 }}'
+        
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ matrix.dotnet }}
+        
+    - name: dotnet build release
+      run: dotnet build src/Utils -c Release
+    - name: dotnet pack release 
+      run: dotnet pack src/Utils -c Release
+    - name: publish every release to NuGet.org
+      run: dotnet nuget push src/Utils/bin/Release/*.nupkg -k ${{secrets.NUGET_ORG_API_KEY}} -s https://api.nuget.org/v3/index.json
+      if: github.event_name == 'push' && startswith(github.ref, 'refs/heads')
+
+    - name: dotnet build release
+      run: dotnet build src/Entities -c Release
+    - name: dotnet pack release 
+      run: dotnet pack src/Entities -c Release
+    - name: publish every release to NuGet.org
+      run: dotnet nuget push src/Entities/bin/Release/*.nupkg -k ${{secrets.NUGET_ORG_API_KEY}} -s https://api.nuget.org/v3/index.json
+      if: github.event_name == 'push' && startswith(github.ref, 'refs/heads')
