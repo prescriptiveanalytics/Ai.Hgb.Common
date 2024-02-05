@@ -82,4 +82,20 @@ namespace Ai.Hgb.Common.Entities {
       Text = text;
     }
   }
+
+  public class Package {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string Tag { get; set; }
+    public List<Description> Descriptions { get; set; } = new();
+
+    public Package() { }
+    public Package(string id, string name, string tag) {
+      Id = id;
+      Name = name;
+      Tag = tag;
+    }
+  }
 }
