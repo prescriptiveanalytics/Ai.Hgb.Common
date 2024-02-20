@@ -6,11 +6,11 @@ namespace Ai.Hgb.Common.Entities {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string Id { get; set; }
-    public string Hash { get; set; }
+    public string? Hash { get; set; }
     public string Name { get; set; }
     public string Tag { get; set; }
-    public DateTime Created { get; set; }
-    public double Size { get; set; }
+    public DateTime? Created { get; set; }
+    public double? Size { get; set; }
 
     public List<Container> Containers { get; } = new();
     public Description? Description { get; set; }
@@ -31,13 +31,13 @@ namespace Ai.Hgb.Common.Entities {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string Id { get; set; }
-    public string Hash { get; set; }
+    public string? Hash { get; set; }
     public string Name { get; set; }
-    public string Status { get; set; }
-    public DateTime LastStarted { get; set; }
+    public string? Status { get; set; }
+    public DateTime? LastStarted { get; set; }
     public List<string> Ports { get; set; } = new();
 
-    public Image Image { get; set; }
+    public Image? Image { get; set; }
     public Description? Description { get; set; }
 
     public Container() { }
@@ -59,18 +59,18 @@ namespace Ai.Hgb.Common.Entities {
     public string Id { get; set; }
     public string Name { get; set; }
     public string Tag { get; set; }
-    public string Text { get; set; }
+    public string? Text { get; set; }
 
     // reference properties
-    public string ImageId { get; set; }
-    public string ImageHash { get; set; }
-    public string ImageName { get; set; }
-    public string ImageTag { get; set; }
+    public string? ImageId { get; set; }
+    public string? ImageHash { get; set; }
+    public string? ImageName { get; set; }
+    public string? ImageTag { get; set; }
     //public Image Image { get; set; } = null!;
 
-    public string ContainerId { get; set; }
-    public string ContainerHash { get; set; }
-    public string ContainerName { get; set; }
+    public string? ContainerId { get; set; }
+    public string? ContainerHash { get; set; }
+    public string? ContainerName { get; set; }
 
 
     public Description() { }
