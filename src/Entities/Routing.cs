@@ -1,8 +1,8 @@
 ﻿namespace Ai.Hgb.Common.Entities {
   public class RoutingTable : ICloneable {
     
-    public List<Route> Routes;
-    public List<Point> Points;
+    public List<Route> Routes { get; set; }
+    public List<Point> Points { get; set; }
 
     //public List<Route> Routes {
     //  get { return routes; }
