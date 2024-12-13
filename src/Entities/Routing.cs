@@ -115,7 +115,7 @@
     }
   }
 
-  public struct Port {
+  public class Port {
     public string Id { get; set; }
     public PortType Type { get; set; }
     
