@@ -1,27 +1,27 @@
 ﻿namespace Ai.Hgb.Common.Entities {
   public class RoutingTable : ICloneable {
+    
+    public List<Route> Routes;
+    public List<Point> Points;
 
-    private List<Route> routes;
-    private List<Point> points;
-
-    public List<Route> Routes {
-      get { return routes; }
-      private set { routes = value; }
-    }
-    public List<Point> Points {
-      get { return points; }
-      private set { points = value; }
-    }
+    //public List<Route> Routes {
+    //  get { return routes; }
+    //  private set { routes = value; }
+    //}
+    //public List<Point> Points {
+    //  get { return points; }
+    //  private set { points = value; }
+    //}
 
     public RoutingTable() {
-      routes = new List<Route>();
-      points = new List<Point>();
+      Routes = new List<Route>();
+      Points = new List<Point>();
     }
 
     public object Clone() {
       var t = new RoutingTable();
-      t.points.AddRange(points.Select(x => (Point)x.Clone()));
-      t.routes.AddRange(routes.Select(x => (Route)x.Clone()));
+      t.Points.AddRange(Points.Select(x => (Point)x.Clone()));
+      t.Routes.AddRange(Routes.Select(x => (Route)x.Clone()));
 
       return t;
     }
@@ -29,28 +29,28 @@
     public RoutingTable ExtractForPoint(string id) {
       var t = new RoutingTable();
 
-      t.routes.AddRange(routes.Where(x => x.Source.Id == id || x.Sink.Id == id));
-      points.AddRange(t.routes.Select(x => x.Source));
-      points.AddRange(t.routes.Select(x => x.Sink));
+      t.Routes.AddRange(Routes.Where(x => x.Source.Id == id || x.Sink.Id == id));
+      Points.AddRange(t.Routes.Select(x => x.Source));
+      Points.AddRange(t.Routes.Select(x => x.Sink));
 
       return t;
     }
 
     public void AddPoint(Point n) {
-      points.Add(n);
+      Points.Add(n);
     }
 
     public void AddRoute(Route e) {
-      routes.Add(e);
+      Routes.Add(e);
     }
 
     public void RemovePoint(string id) {
-      routes.RemoveAll(x => x.Source.Id == id || x.Sink.Id == id);
-      points.RemoveAll(x => x.Id == id);
+      Routes.RemoveAll(x => x.Source.Id == id || x.Sink.Id == id);
+      Points.RemoveAll(x => x.Id == id);
     }
 
     public void RemoveRoute(string id) {
-      routes.RemoveAll(x => x.Source.Id == id || x.Sink.Id == id);
+      Routes.RemoveAll(x => x.Source.Id == id || x.Sink.Id == id);
     }
   }
 
