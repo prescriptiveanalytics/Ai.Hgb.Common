@@ -54,7 +54,7 @@
     }
   }
 
-  public class Route : ICloneable {
+  public class Route : ICloneable, IEquatable<Route> {
 
     public string Id { get; set; }
     public Point Source { get; set; }
@@ -86,9 +86,21 @@
     public string GetRoutingString(string delimiter) {
       return $"{Source.Typename}{delimiter}{Source.Id}";
     }
+
+    public bool Equals(Route? other) {
+      return Source == other.Source && SourcePort == other.SourcePort && Sink == other.Sink && SinkPort == other.SinkPort;
+    }
+
+    public static bool operator ==(Route left, Route right) {
+      return left.Equals(right);
+    }
+
+    public static bool operator !=(Route left, Route right) {
+      return !left.Equals(right);
+    }
   }
 
-  public class Point : ICloneable { // Location, Station, 
+  public class Point : ICloneable, IEquatable<Point> { // Location, Station, 
     public string Id { get; set; }
 
     public string Typename { get; set; }
@@ -113,9 +125,21 @@
     public string GetRoutingString(string delimiter) {
       return $"{Typename}{delimiter}{Id}";
     }
+
+    public bool Equals(Point? other) {
+      return Id == other.Id && Typename == other.Typename && FullyQualifiedTypename == other.FullyQualifiedTypename;
+    }
+
+    public static bool operator ==(Point left, Point right) {
+      return left.Equals(right);
+    }
+
+    public static bool operator !=(Point left, Point right) {
+      return !left.Equals(right);
+    }
   }
 
-  public class Port {
+  public class Port :ICloneable, IEquatable<Port> {
     public string Id { get; set; }
     public PortType Type { get; set; }
     
@@ -127,6 +151,22 @@
     public string Address { get; set; }
 
     public Port() { }
+
+    public object Clone() {
+      return new Port() { Id = Id, Type = Type };
+    }
+
+    public bool Equals(Port? other) {
+      return Id == other.Id && Type == other.Type;
+    }
+
+    public static bool operator ==(Port left, Port right) {
+      return left.Equals(right);
+    }
+
+    public static bool operator !=(Port left, Port right) {
+      return !left.Equals(right);
+    }
   }
 
   public enum PortType {
